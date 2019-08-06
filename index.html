@@ -1,1 +1,121 @@
-hello
+<!DOCTYPE html>
+<html>
+<body>
+
+  
+
+<br><br>
+<b>BOM List:</b>
+<table border="1"><tr><th>SKU</th><th>Description</th></tr>
+
+</table>
+<br>
+Region:
+<br>
+<input onchange="region(this.value)" type="radio" name="region" value="Europe">Europe<br>
+<input onchange="region(this.value)" type="radio" name="region" value="International">International<br>
+<input onchange="region(this.value)" type="radio" name="region" value="China">China<br>
+<input onchange="region(this.value)" type="radio" name="region" value="NAM">NAM<br><br>
+<label><input id="pump" onclick="pump(this.id)" type="checkbox" name="condpump">Condensate pump</label><br>
+<label><input type="checkbox" name="userdisplay">User display</label><br>
+<label><input type="checkbox" name="lowtempkit">Low temp kit</label><br>
+<br>
+Piping:
+<br>
+<input type="radio" name="piping" selected>Top piping kit<br>
+<input type="radio" name="piping">Bottom piping kit (short)<br>
+<input type="radio" name="piping">Bottom piping kit (long)<br>
+<input type="radio" name="piping">(none)<br>
+
+<br>
+<table border="1" id="table">
+
+</table>
+
+<script>
+
+var arr = [
+{qty:"1", sku:"ACRMD4KI-1", desc:"Rackmount DX 5U 3.5kW Indoor Unit"},
+{qty:"1", sku:"ACRMD4KT-1", desc:"Rackmount DX 5U 3.5kW Indoor Unit (ETL 60Hz)"},
+{qty:"1", sku:"ACRMD4KI-2", desc:"Rackmount DX 5U 3.5kW Outdoor Unit (precharged)"},
+{qty:"1", sku:"ACRMD4KI-3", desc:"Rackmount DX 5U 3.5kW Outdoor Unit (non-precharged)"},
+{qty:"1", sku:"ACRMD4KT-2", desc:"Rackmount DX 5U 3.5kW Outdoor Unit (CE ETL 60Hz)"},
+{qty:"1", sku:"ACAC10039", desc:"Condensate pump (50Hz CE/CCC)"},
+{qty:"1", sku:"ACAC10040", desc:"Winter kit (50Hz CE/CCC)"},
+{qty:"1", sku:"ACAC10041", desc:"User display"},
+{qty:"1", sku:"ACAC10041", desc:"Top installation kit"},
+{qty:"1", sku:"ACAC10041", desc:"Long bottom installation kit (for below raised floor)"},
+{qty:"1", sku:"ACAC10041", desc:"Short bottom installation kit (for above raised floor)"},
+{qty:"1", sku:"ACAC10046", desc:"Condensate pump (60Hz ETL)"},
+{qty:"1", sku:"ACAC10047", desc:"Winter kit (60Hz ETL)"},
+{qty:"1", sku:"ACRMD4KICH-1", desc:"Rackmount DX 5U 3.5kW Indoor Unit (CCC 50Hz)"},
+{qty:"1", sku:"ACRMD4KICH-2", desc:"Rackmount DX 5U 3.5kW Indoor Unit (CCC 50Hz)"}
+];
+console.log(arr);
+
+var table = document.getElementById("table");
+arr.forEach(function(item, index) {
+
+});
+
+var BOM = [];
+
+function region(value) {
+if (value == "Europe") {
+BOM[0] = arr[0];
+BOM[1] = arr[3];
+console.log(BOM);
+}
+else if (value == "International") {
+BOM[0] = arr[0];
+BOM[1] = arr[2];
+console.log(BOM);
+}
+else if (value == "China") {
+BOM[0] = arr[13];
+BOM[1] = arr[14];
+console.log(BOM);
+}
+else if (value == "NAM") {
+BOM[0] = arr[1];
+BOM[1] = arr[4];
+}
+makeTable();
+}
+
+//condensate pump
+function pump(value) {
+var x = document.getElementById(value);
+if (x.checked == true) {
+BOM[2] = arr[5]
+}
+if (x.checked == false) {
+BOM[2].splice();
+}
+
+makeTable();
+}
+
+function makeTable() {
+var table = document.getElementById("table");
+table.innerHTML = '<tr><th>Qty</th><th>SKU</th><th>Desc</th></tr>';
+BOM.forEach(function (item, index) {
+var row = table.insertRow();
+row.id = index;
+var cell0 = row.insertCell(0);
+var cell1 = row.insertCell(1);
+var cell2 = row.insertCell(2);
+cell0.innerHTML = item.qty;
+cell1.innerHTML = item.sku;
+cell2.innerHTML = item.desc;
+});
+}
+
+
+
+</script>
+
+
+
+</body>
+</html>
