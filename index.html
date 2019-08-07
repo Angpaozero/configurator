@@ -1,121 +1,166 @@
-<!DOCTYPE html>
-<html>
-<body>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <body>
+<img src="https://schneider-electric.box.com/shared/static/ybqpmzjq4zrtt25az7pttxsgp9h14wis.png">
+    <br><br>
+
+    <br>
+    Region:
+    <br>
+    <input onchange="region(this.value)" type="radio" name="region" value="Europe">Europe<br>
+    <input onchange="region(this.value)" type="radio" name="region" value="International">International<br>
+    <input onchange="region(this.value)" type="radio" name="region" value="China">China<br>
+    <input onchange="region(this.value)" type="radio" name="region" value="NAM">NAM<br><br>
+
+<div id="div" style="display: none;">
+    <label><input id="condpump" onclick="condPump()" type="checkbox" checked>Condensate pump</label><br>
+    <label><input type="checkbox" id="kit" onclick="ltKit()">Low temp kit</label><br>
+    <label><input type="checkbox" id="ux" onclick="uI()" checked>User display</label><br>
+
+
+    <br>
+    Piping:
+    <br>
+    <input type="radio" onclick="pipingKit()" value="ACAC10042" name="piping" checked>Top piping kit<br>
+    <input type="radio" onclick="pipingKit()" value="ACAC10043" name="piping">Bottom piping kit (long)<br>
+    <input type="radio" onclick="pipingKit()" value="ACAC10044" name="piping">Bottom piping kit (short)<br>
+    <input type="radio" onclick="pipingKit()" value="nada" name="piping">(none)<br>
+
+    <br>
+
+    <table border="1" id="table">
+      <tr>
+        <th>Qty</th>
+        <th>SKU</th>
+        <th>Description</th>
+      </tr>
+    </table>
+</div>
+
+
+    <script>
+      $(function() {
+        var sheetUrl = 'https://spreadsheets.google.com/feeds/list/13H4ogDZQ7H_61mJlwYhXhJom4wAyqbdfiC3mzSzLrQk/1/public/full?alt=json';
+        $.getJSON(sheetUrl, function(data) {
+          var entry = data.feed.entry;
+          // console.log(entry);
+          var table = document.getElementById("table");
+          entry.forEach(function(item, index) {
+            var row = table.insertRow();
+            row.id = item.gsx$sku.$t;
+            row.style.display = "none";
+            var cell0 = row.insertCell(0);
+            var cell1 = row.insertCell(1);
+            var cell2 = row.insertCell(2);
+            cell0.innerHTML = item.gsx$qty.$t;
+            cell1.innerHTML = item.gsx$sku.$t;
+            cell2.innerHTML = item.gsx$desc.$t;
+          })
+        });
+      });
+
+      var pump;
+      var ltkit;
+      var ui;
+      var piping;
+
+      function region(value) {
+
+        var tr = document.getElementsByTagName("TR");
+        var i;
+
+        for (i = 1; i < tr.length; i++) {
+          tr[i].style.display = "none";
+        }
+        pump = "ACAC10039";
+        ltkit = "ACAC10040";
+        ui = "ACAC10041";
+        piping = "ACAC10042"
+        
+        if (value == "Europe") {
+          document.getElementById("ACRMD4KI-1").style.display = "";
+          document.getElementById("ACRMD4KI-3").style.display = "";
+
+        } else if (value == "International") {
+          document.getElementById("ACRMD4KI-1").style.display = "";
+          document.getElementById("ACRMD4KI-2").style.display = "";
+
+        } else if (value == "China") {
+          document.getElementById("ACRMD4KICH-1").style.display = "";
+          document.getElementById("ACRMD4KICH-2").style.display = "";
+
+        } else if (value == "NAM") {
+          document.getElementById("ACRMD4KT-1").style.display = "";
+          document.getElementById("ACRMD4KT-2").style.display = "";
+          pump = "ACAC10046";
+          ltkit = "ACAC10047";
+        }
+
+        document.getElementById("div").style.display = "";
+
+        condPump();
+        uI();
+        ltKit();
+        pipingKit()
+      }
+
+      //var pump = document.getElementById("pump");
+      //var ui = document.getElementById("ui");
+      //var ltkit = document.getElementById("ltkit");
+
+      function condPump() {
+        var r = document.getElementById(pump);
+        var checked = document.getElementById("condpump");
+        if (checked.checked == true) {
+          r.style.display = "";
+        } else {
+          r.style.display = "none";
+        }
+      }
+
+
+      function uI() {
+        var r = document.getElementById(ui);
+        var checked = document.getElementById("ux");
+        if (checked.checked == true) {
+          r.style.display = "";
+        } else {
+          r.style.display = "none";
+        }
+      }
+
+      function ltKit() {
+        var r = document.getElementById(ltkit);
+        var checked = document.getElementById("kit");
+        if (checked.checked == true) {
+          r.style.display = "";
+        } else {
+          r.style.display = "none";
+        }
+      }
+      
+      function pipingKit(h) {
+      var names = document.getElementsByName("piping");
+      var j;
+      
+for (j = 0; j < names.length; j++) { 
+  if (names[j].checked == true && names[j].value !== "nada") {
+  document.getElementById(names[j].value).style.display = "";
+  }
+  else if (names[j].value == "nada") {
+  }
   
-
-<br><br>
-<b>BOM List:</b>
-<table border="1"><tr><th>SKU</th><th>Description</th></tr>
-
-</table>
-<br>
-Region:
-<br>
-<input onchange="region(this.value)" type="radio" name="region" value="Europe">Europe<br>
-<input onchange="region(this.value)" type="radio" name="region" value="International">International<br>
-<input onchange="region(this.value)" type="radio" name="region" value="China">China<br>
-<input onchange="region(this.value)" type="radio" name="region" value="NAM">NAM<br><br>
-<label><input id="pump" onclick="pump(this.id)" type="checkbox" name="condpump">Condensate pump</label><br>
-<label><input type="checkbox" name="userdisplay">User display</label><br>
-<label><input type="checkbox" name="lowtempkit">Low temp kit</label><br>
-<br>
-Piping:
-<br>
-<input type="radio" name="piping" selected>Top piping kit<br>
-<input type="radio" name="piping">Bottom piping kit (short)<br>
-<input type="radio" name="piping">Bottom piping kit (long)<br>
-<input type="radio" name="piping">(none)<br>
-
-<br>
-<table border="1" id="table">
-
-</table>
-
-<script>
-
-var arr = [
-{qty:"1", sku:"ACRMD4KI-1", desc:"Rackmount DX 5U 3.5kW Indoor Unit"},
-{qty:"1", sku:"ACRMD4KT-1", desc:"Rackmount DX 5U 3.5kW Indoor Unit (ETL 60Hz)"},
-{qty:"1", sku:"ACRMD4KI-2", desc:"Rackmount DX 5U 3.5kW Outdoor Unit (precharged)"},
-{qty:"1", sku:"ACRMD4KI-3", desc:"Rackmount DX 5U 3.5kW Outdoor Unit (non-precharged)"},
-{qty:"1", sku:"ACRMD4KT-2", desc:"Rackmount DX 5U 3.5kW Outdoor Unit (CE ETL 60Hz)"},
-{qty:"1", sku:"ACAC10039", desc:"Condensate pump (50Hz CE/CCC)"},
-{qty:"1", sku:"ACAC10040", desc:"Winter kit (50Hz CE/CCC)"},
-{qty:"1", sku:"ACAC10041", desc:"User display"},
-{qty:"1", sku:"ACAC10041", desc:"Top installation kit"},
-{qty:"1", sku:"ACAC10041", desc:"Long bottom installation kit (for below raised floor)"},
-{qty:"1", sku:"ACAC10041", desc:"Short bottom installation kit (for above raised floor)"},
-{qty:"1", sku:"ACAC10046", desc:"Condensate pump (60Hz ETL)"},
-{qty:"1", sku:"ACAC10047", desc:"Winter kit (60Hz ETL)"},
-{qty:"1", sku:"ACRMD4KICH-1", desc:"Rackmount DX 5U 3.5kW Indoor Unit (CCC 50Hz)"},
-{qty:"1", sku:"ACRMD4KICH-2", desc:"Rackmount DX 5U 3.5kW Indoor Unit (CCC 50Hz)"}
-];
-console.log(arr);
-
-var table = document.getElementById("table");
-arr.forEach(function(item, index) {
-
-});
-
-var BOM = [];
-
-function region(value) {
-if (value == "Europe") {
-BOM[0] = arr[0];
-BOM[1] = arr[3];
-console.log(BOM);
-}
-else if (value == "International") {
-BOM[0] = arr[0];
-BOM[1] = arr[2];
-console.log(BOM);
-}
-else if (value == "China") {
-BOM[0] = arr[13];
-BOM[1] = arr[14];
-console.log(BOM);
-}
-else if (value == "NAM") {
-BOM[0] = arr[1];
-BOM[1] = arr[4];
-}
-makeTable();
-}
-
-//condensate pump
-function pump(value) {
-var x = document.getElementById(value);
-if (x.checked == true) {
-BOM[2] = arr[5]
-}
-if (x.checked == false) {
-BOM[2].splice();
-}
-
-makeTable();
-}
-
-function makeTable() {
-var table = document.getElementById("table");
-table.innerHTML = '<tr><th>Qty</th><th>SKU</th><th>Desc</th></tr>';
-BOM.forEach(function (item, index) {
-var row = table.insertRow();
-row.id = index;
-var cell0 = row.insertCell(0);
-var cell1 = row.insertCell(1);
-var cell2 = row.insertCell(2);
-cell0.innerHTML = item.qty;
-cell1.innerHTML = item.sku;
-cell2.innerHTML = item.desc;
-});
+  else {
+  document.getElementById(names[j].value).style.display = "none";
+  }
 }
 
 
+      }
 
-</script>
+    </script>
 
-
-
-</body>
-</html>
+  </body>
+  </head>
