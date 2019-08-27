@@ -1,0 +1,108 @@
+<html>
+<head>
+<style>
+html, body {
+  font-family: sans-serif;
+  font-size: 0.9em;
+  }
+.div {
+  text-align: left;
+  display: inline-block;
+}
+</style>
+</head>
+<body>
+<div align="center">
+<div class="div">
+<h2 style="background-color: green; color: white;">
+BOM Configurator
+</h2>
+<h4>
+for the new InRow DX 300mm
+</h4>
+
+<br>Indoor unit: 
+<br>
+<select onchange="BOM()">
+<option value="ACRD301S">standard cooling only</option>
+<option value="ACRD301P">standard with humidifier and reheat</option>
+<option value="ACRD307">rated for -13degF (NAM only)</option>
+</select>
+
+<br><br>Outdoor unit: 
+<br>
+<select onchange="BOM()">
+<option value="ACCU300">220V/60Hz Single Power</option>
+<option value="ACCU300D <br> ACAC10038">220V/60Hz Dual Power Inputs</option>
+<option value="ACCU301">480V/60Hz Single Power</option>
+<option value="ACCU301D <br> ACAC10038">480V/60Hz Dual Power Inputs</option>
+<option value="ACCU302">400V/50Hz Single Power</option>
+<option value="ACCU302D <br> ACAC10038">400V/50Hz Dual Power Inputs</option>
+<option value="ACCU30301">380V/50Hz (China) Single Power</option>
+<option value="ACCU30302 <br> ACAC10038">380V/50Hz (China) Dual Power Inputs</option>
+</select>
+
+<br><br>Sound jacket : 
+<br>
+<select onchange="BOM()">
+<option value="">none</option>
+<option value="ACAC10035">yes</option>
+</select>
+
+<br><br>Humidity sensor : 
+<br>
+<select onchange="BOM()">
+<option value="">none</option>
+<option value="ACAC10036">yes</option>
+</select>
+
+<br><br>Isolation valve and union installation kit: 
+<br>
+<select onchange="BOM()">
+<option value="ACAC10037" disabled selected>yes</option>
+<option value="" disabled>no</option>
+</select>
+
+<br><br>Dual power : 
+<br>
+<select onchange="BOM()">
+<option value="">none</option>
+<option value="ACAC10038">yes</option>
+</select>
+
+<br><br>-40deg winter kit: 
+<br>
+<select onchange="BOM()">
+<option value="">none</option>
+<option value="ACAC10049 </li><li> ACAC75014">NAM</option>
+<option value="ACAC10049 </li><li> ACAC75015">Europe</option>
+</select>
+<br><br>
+<p><strong>BOM:</strong></p>
+<ol id="p" style="border: solid green;"></ol>
+</div>
+
+
+</div>
+
+
+<script>
+function BOM() {
+var array = document.getElementsByTagName("SELECT");
+var p = document.getElementById("p");
+p.innerHTML = "";
+
+var i;
+for (i = 0; i < array.length; i++) {
+if (array[i].value !== "") {
+p.innerHTML += '<li>' + array[i].value + '</li>';
+}
+
+}
+}
+BOM();
+</script>
+
+
+</body>
+</html>
