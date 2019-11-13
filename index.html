@@ -33,11 +33,11 @@
       </select><br><br>
 
       <div id="div" style="display: none;">
-
+        Options:<br>
         <input type="checkbox" onchange="(function(){$('#pump').toggle();}) ();" checked>Condensate Pump<br>
         <input type="checkbox" onchange="(function(){$('#display').toggle();}) ();" checked>User display<br>
-        <input type="checkbox" onchange="(function(){$('#winter').toggle();}) ();" checked>Winter kit<br>
-        <input type="checkbox" onchange="(function(){$('#stack').toggle();}) ();" checked>Stacking kit<br>
+        <input type="checkbox" onchange="(function(){$('#winter').toggle();}) ();">Winter kit (range: -20C to -40C)<br>
+        <input type="checkbox" onchange="(function(){$('#stack').toggle();}) ();">Stacking kit (NAM only)<br>
 
         <br>
 
@@ -89,6 +89,8 @@
 
         document.getElementById("long").setAttribute("style", "display: none;");
         document.getElementById("short").setAttribute("style", "display: none;");
+        document.getElementById("winter").setAttribute("style", "display: none;");
+        document.getElementById("stack").setAttribute("style", "display: none;");
 
       });
     });
@@ -113,5 +115,6 @@
     }
 
   </script>
-
+<br>
+<a href="https://github.com/schweissguth/configurator/edit/master/index.html">admin</a>
 </body>
