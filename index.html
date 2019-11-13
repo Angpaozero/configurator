@@ -1,172 +1,117 @@
-  <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    .div0 {
+      margin: auto;
+      text-align: center;
+    }
 
-  <body>
-  <div align="center">
-  <div style="text-align: left; display: inline-block">
-  
+    .div1 {
+      text-align: left;
+      display: inline-block;
+    }
 
-  
-<img src="https://schneider-electric.box.com/shared/static/ybqpmzjq4zrtt25az7pttxsgp9h14wis.png">
-    <br><br>
+  </style>
+</head>
 
-    <br>
-    Region:
-    <br>
-    <input onchange="region(this.value)" type="radio" name="region" value="Europe">Europe<br>
-    <input onchange="region(this.value)" type="radio" name="region" value="International">International<br>
-    <input onchange="region(this.value)" type="radio" name="region" value="China">China<br>
-    <input onchange="region(this.value)" type="radio" name="region" value="NAM">NAM<br><br>
-
-<div id="div" style="display: none;">
-    <label><input id="condpump" onclick="condPump()" type="checkbox" checked>Condensate pump</label><br>
-    <label><input type="checkbox" id="kit" onclick="ltKit()">Low temp kit</label><br>
-    <label><input type="checkbox" id="ux" onclick="uI()" checked>User display</label><br>
+<body>
+  <div class="div0">
+    <div class="div1">
 
 
-    <br>
-    Piping:
-    <br>
-    <input type="radio" onclick="pipingKit()" value="ACAC10042" name="piping" checked>Top piping kit<br>
-    <input type="radio" onclick="pipingKit()" value="ACAC10043" name="piping">Bottom piping kit (long)<br>
-    <input type="radio" onclick="pipingKit()" value="ACAC10044" name="piping">Bottom piping kit (short)<br>
-    <input type="radio" onclick="pipingKit()" value="nada" name="piping">(none)<br>
 
-    <br>
+      <img src="https://schneider-electric.box.com/shared/static/ybqpmzjq4zrtt25az7pttxsgp9h14wis.png">
+      <br><br>
 
-    <table border="1" id="table">
-      <tr>
-        <th>Qty</th>
-        <th>SKU</th>
-        <th>Description</th>
-      </tr>
-    </table>
-</div>
+      <select onchange="region(this.value)">
+        <option value="gsx$blank" disabled selected>Region</option>
+        <option value="gsx$europe">Europe</option>
+        <option value="gsx$nam">NAM</option>;
+        <option value="gsx$intl">International</option>;
+        <option value="gsx$china">China</option>;
+      </select><br><br>
+
+      <div id="div" style="display: none;">
+
+        <input type="checkbox" onchange="(function(){$('#pump').toggle();}) ();" checked>Condensate Pump<br>
+        <input type="checkbox" onchange="(function(){$('#display').toggle();}) ();" checked>User display<br>
+        <input type="checkbox" onchange="(function(){$('#winter').toggle();}) ();" checked>Winter kit<br>
+        <input type="checkbox" onchange="(function(){$('#stack').toggle();}) ();" checked>Stacking kit<br>
+
+        <br>
+
+        <select onchange="pipe(this.value)">
+          <option value="top" selected>Top pipe kit</option>
+          <option value="short">Bottom pipe kit (for above raised floor)</option>
+          <option value="long">Long bottom piping kit (for below raised floor)</option>;
+          <option value="0">(none)</option>;
+        </select><br><br>
+      </div>
+    </div>
+    <center>
+      <table border="1" id="table">
+        <tr>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>SKU</th>
+          <th>Description</th>
+        </tr>
+      </table>
+    </center>
 
 
-    <script>
-      $(function() {
-        var sheetUrl = 'https://spreadsheets.google.com/feeds/list/13H4ogDZQ7H_61mJlwYhXhJom4wAyqbdfiC3mzSzLrQk/1/public/full?alt=json';
-        $.getJSON(sheetUrl, function(data) {
-          var entry = data.feed.entry;
-          // console.log(entry);
-          var table = document.getElementById("table");
-          entry.forEach(function(item, index) {
-            var row = table.insertRow();
-            row.id = item.gsx$sku.$t;
-            row.style.display = "none";
-            var cell0 = row.insertCell(0);
-            var cell1 = row.insertCell(1);
-            var cell2 = row.insertCell(2);
-            cell0.innerHTML = item.gsx$qty.$t;
-            cell1.innerHTML = item.gsx$sku.$t;
-            cell2.innerHTML = item.gsx$desc.$t;
-          })
+  </div>
+
+  <script>
+    var dater = [];
+    $(function() {
+      var sheetUrl = 'https://spreadsheets.google.com/feeds/list/13H4ogDZQ7H_61mJlwYhXhJom4wAyqbdfiC3mzSzLrQk/1/public/full?alt=json';
+      $.getJSON(sheetUrl, function(data) {
+        var entry = data.feed.entry;
+        dater = entry;
+        console.log(entry);
+        var table = document.getElementById("table")
+
+
+        entry.forEach(function(item, index) {
+          var newrow = table.insertRow();
+          newrow.id = item.gsx$short.$t;
+          var cell0 = newrow.insertCell(0);
+          var cell1 = newrow.insertCell(1);
+          var cell2 = newrow.insertCell(2);
+          var cell3 = newrow.insertCell(3);
+          cell1.innerText = "1"
+          cell0.innerHTML = item.gsx$item.$t;
+          cell2.id = index;
+          cell3.className = index;
         });
+
+        document.getElementById("long").setAttribute("style", "display: none;");
+        document.getElementById("short").setAttribute("style", "display: none;");
+
+      });
+    });
+
+    function region(value) {
+      $('#div').show();
+      dater.forEach(function(item, index) {
+        var indx = document.getElementById(index);
+        indx.innerHTML = item[value]['$t'];
+        desc = value + 'desc';
+        document.getElementsByClassName(index)[0].innerHTML = item[desc]['$t'];
       });
 
-      var pump;
-      var ltkit;
-      var ui;
-      var piping;
+    }
 
-      function region(value) {
+    function pipe(value) {
+      document.getElementById("top").setAttribute("style", "display: none;");
+      document.getElementById("short").setAttribute("style", "display: none;");
+      document.getElementById("long").setAttribute("style", "display: none;");
+      document.getElementById(value).setAttribute("style", "");
 
-        var tr = document.getElementsByTagName("TR");
-        var i;
+    }
 
-        for (i = 1; i < tr.length; i++) {
-          tr[i].style.display = "none";
-        }
-        pump = "ACAC10039";
-        ltkit = "ACAC10040";
-        ui = "ACAC10041";
-        piping = "ACAC10042"
-        
-        if (value == "Europe") {
-          document.getElementById("ACRMD4KI-1").style.display = "";
-          document.getElementById("ACRMD4KI-3").style.display = "";
+  </script>
 
-        } else if (value == "International") {
-          document.getElementById("ACRMD4KI-1").style.display = "";
-          document.getElementById("ACRMD4KI-2").style.display = "";
-
-        } else if (value == "China") {
-          document.getElementById("ACRMD4KICH-1").style.display = "";
-          document.getElementById("ACRMD4KICH-2").style.display = "";
-
-        } else if (value == "NAM") {
-          document.getElementById("ACRMD4KT-1").style.display = "";
-          document.getElementById("ACRMD4KT-2").style.display = "";
-          pump = "ACAC10046";
-          ltkit = "ACAC10047";
-        }
-
-        document.getElementById("div").style.display = "";
-
-        condPump();
-        uI();
-        ltKit();
-        pipingKit()
-      }
-
-      //var pump = document.getElementById("pump");
-      //var ui = document.getElementById("ui");
-      //var ltkit = document.getElementById("ltkit");
-
-      function condPump() {
-        var r = document.getElementById(pump);
-        var checked = document.getElementById("condpump");
-        if (checked.checked == true) {
-          r.style.display = "";
-        } else {
-          r.style.display = "none";
-        }
-      }
-
-
-      function uI() {
-        var r = document.getElementById(ui);
-        var checked = document.getElementById("ux");
-        if (checked.checked == true) {
-          r.style.display = "";
-        } else {
-          r.style.display = "none";
-        }
-      }
-
-      function ltKit() {
-        var r = document.getElementById(ltkit);
-        var checked = document.getElementById("kit");
-        if (checked.checked == true) {
-          r.style.display = "";
-        } else {
-          r.style.display = "none";
-        }
-      }
-      
-      function pipingKit(h) {
-      var names = document.getElementsByName("piping");
-      var j;
-      
-for (j = 0; j < names.length; j++) { 
-  if (names[j].checked == true && names[j].value !== "nada") {
-  document.getElementById(names[j].value).style.display = "";
-  }
-  else if (names[j].value == "nada") {
-  }
-  
-  else {
-  document.getElementById(names[j].value).style.display = "none";
-  }
-}
-
-
-      }
-
-    </script>
-</div>   
-  </div>
-  </body>
-  </head>
+</body>
