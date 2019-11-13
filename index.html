@@ -12,6 +12,19 @@
       display: inline-block;
     }
 
+    table {
+      border-collapse: collapse;
+    }
+
+    td,
+    th {
+      border: 1px solid black;
+    }
+
+    th:first-child {
+      border: none;
+    }
+
   </style>
 </head>
 
@@ -50,17 +63,17 @@
       </div>
     </div>
     <center>
-      <table border="1" id="table">
+      <table id="table">
         <tr>
-          <th>Item</th>
+          <th></th>
           <th>Qty</th>
           <th>SKU</th>
           <th>Description</th>
         </tr>
       </table>
-      
+
       <br>
-<a href="https://github.com/schweissguth/configurator/edit/master/index.html">admin</a>
+      <a href="https://github.com/schweissguth/configurator/edit/master/index.html">admin</a>
     </center>
 
 
@@ -81,6 +94,7 @@
           var newrow = table.insertRow();
           newrow.id = item.gsx$short.$t;
           var cell0 = newrow.insertCell(0);
+          cell0.setAttribute("style", "border: none; text-align: left;");
           var cell1 = newrow.insertCell(1);
           var cell2 = newrow.insertCell(2);
           var cell3 = newrow.insertCell(3);
